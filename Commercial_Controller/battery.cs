@@ -107,6 +107,7 @@ namespace Commercial_Controller
 
             elevator.addNewRequest(_requestedFloor);
             elevator.move();
+            return (column, elevator);
         }
     }
 }

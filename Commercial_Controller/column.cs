@@ -10,7 +10,7 @@ namespace Commercial_Controller
         public int amountOfElevators, amountOfFloors, ID;
         public List<Elevator> elevatorsList;
         public List<CallButton> callButtonsList;
-        public List<ServedFloors> servedFloors;
+        public List<int> servedFloorsList;
 
         private int elevatorID = 1;
 
@@ -22,7 +22,7 @@ namespace Commercial_Controller
             this.amountOfElevators = _amountOfElevators;
             this.elevatorsList = new List<Elevator>();
             this.callButtonsList = new List<CallButton>();
-            this.servedFloors = new List<ServedFloors>();
+            this.servedFloorsList = _servedFloors;
 
             createElevators(_amountOfFloors, _amountOfElevators);
             createCallButtons(_amountOfFloors, _isBasement);
@@ -57,7 +57,7 @@ namespace Commercial_Controller
         public void createElevators(int _amountOfFloors, int _amountOfElevators)
         {
             for (int i = 0; i < _amountOfElevators; i++){
-                Elevator elevator = new Elevator(Global.elevatorID);
+                Elevator elevator = new Elevator(Global.elevatorID, "idle", _amountOfFloors, 1);
                 this.elevatorsList.Add(elevator);
                 Global.elevatorID++;
             }
@@ -82,7 +82,6 @@ namespace Commercial_Controller
             bestElevatorInformations.bestElevator = null;
             bestElevatorInformations.bestScore = 6;
             bestElevatorInformations.referenceGap = 10000000;
-            
 
             if (requestedFloor == 1) {
                 foreach (Elevator elevator in this.elevatorsList)
@@ -102,7 +101,6 @@ namespace Commercial_Controller
                     else {
                         bestElevatorInformations = this.checkIfElevatorIsBetter(5, elevator, bestElevatorInformations, requestedFloor);
                     }
-
                 }
             }
             else 

@@ -14,10 +14,10 @@ namespace Commercial_Controller
         
 
 
-        public Elevator(int _elevatorID, int _amountOfFloors, int _currentFloor, string direction)
+        public Elevator(int _elevatorID, string _status, int _amountOfFloors, int _currentFloor)
         {
             this.ID = _elevatorID;
-            this.status = "online";
+            this.status = _status;
             this.amountOfFloors = _amountOfFloors;
             this.currentFloor = _currentFloor;
             this.Door = new Door(ID, "closed");
@@ -50,7 +50,7 @@ namespace Commercial_Controller
                     }
                 }
                 this.status = "stopped";
-                this.operateDoors();
+                // this.operateDoors();
                 this.floorRequestsList.RemoveAt(0);
                 this.completedRequestsList.Add(destination);
             }
@@ -64,26 +64,23 @@ namespace Commercial_Controller
             }
         }
 
-        public void operateDoors()
-        {
-            this.Door.status = "opened";
-            if (this.overweight) {
-                this.Door.status = "closing";
-            }
-            if (this.obstruction){
-                this.Door.status = "closed";
-            }else{
-                this.operateDoors();
-            }
+        // public void operateDoors()
+        // {
+        //     this.Door.status = "opened";
+        //     if (this.overweight) {
+        //         this.Door.status = "closing";
+        //     }
+        //     if (this.obstruction){
+        //         this.Door.status = "closed";
+        //     }else{
+        //         this.operateDoors();
+        //     }
             
-                while (this.overweight){
-                    Console.WriteLine("OVERWEIGHT");
-                }
-            this.operateDoors();
-            
-
-
-        }
+        //         while (this.overweight){
+        //             Console.WriteLine("OVERWEIGHT");
+        //         }
+        //     this.operateDoors();
+        // }
 
         public void addNewRequest(int requestedFloor)
         {
