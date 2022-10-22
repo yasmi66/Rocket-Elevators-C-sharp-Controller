@@ -83,38 +83,48 @@ namespace Commercial_Controller
             bestElevatorInformations.bestScore = 6;
             bestElevatorInformations.referenceGap = 10000000;
 
+            //if user position (requestedFloor) is the lobby
             if (requestedFloor == 1) {
                 foreach (Elevator elevator in this.elevatorsList)
                 {
+                    // elevator is stopped at the lobby and gets requested
                     if(1 == elevator.currentFloor && elevator.status == "stopped"){
                         bestElevatorInformations = this.checkIfElevatorIsBetter(1, elevator, bestElevatorInformations, requestedFloor);
                     }
+                    // elevator idles at lobby level and does not get requested
                     else if (1 == elevator.currentFloor && elevator.status == "idle"){
                         bestElevatorInformations = this.checkIfElevatorIsBetter(2, elevator, bestElevatorInformations, requestedFloor);
                     }
+                    // elevator is lower than user position and is going up
                     else if (1 > elevator.currentFloor && elevator.direction == "up"){
                         bestElevatorInformations = this.checkIfElevatorIsBetter(3, elevator, bestElevatorInformations, requestedFloor);
                     }
+                    // elevator is lower than user position and is going down
                     else if (1 < elevator.currentFloor && elevator.direction == "down"){
+                        bestElevatorInformations = this.checkIfElevatorIsBetter(3, elevator, bestElevatorInformations, requestedFloor);
+                    }
+                    // elevator's status is idling, elevator is not at lobby level and does not get requested
+                    else if (elevator.status == "idle"){
                         bestElevatorInformations = this.checkIfElevatorIsBetter(4, elevator, bestElevatorInformations, requestedFloor);
                     }
+                    // elevator not available but will be assigned to the user's request if no other elevators are better options
                     else {
                         bestElevatorInformations = this.checkIfElevatorIsBetter(5, elevator, bestElevatorInformations, requestedFloor);
                     }
                 }
             }
-            else 
+            else // if user is not positionned in the lobby
             {
                 foreach (Elevator elevator in this.elevatorsList)
-                {
+                {   // elevator is stopped at user's position and going to lobby
                     if (requestedFloor == elevator.currentFloor && elevator.status == "stopped" && requestedDirection == elevator.direction){
                         bestElevatorInformations = this.checkIfElevatorIsBetter(1, elevator, bestElevatorInformations, requestedFloor);
-                    }
+                    } //elevator is below user's position going up
                     else if (requestedFloor > elevator.currentFloor && elevator.direction == "up" && requestedDirection == "up"){
                         bestElevatorInformations = this.checkIfElevatorIsBetter(2, elevator, bestElevatorInformations, requestedFloor);
-                    }
+                    } // elevator above user's position going down
                     else if (requestedFloor < elevator.currentFloor && elevator.direction == "down" && requestedDirection == "down"){
-                        bestElevatorInformations = this.checkIfElevatorIsBetter(3, elevator, bestElevatorInformations, requestedFloor);
+                        bestElevatorInformations = this.checkIfElevatorIsBetter(2, elevator, bestElevatorInformations, requestedFloor);
                     }
                     else if (elevator.status == "idle"){
                         bestElevatorInformations = this.checkIfElevatorIsBetter(4, elevator, bestElevatorInformations, requestedFloor);
